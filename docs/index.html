@@ -309,6 +309,7 @@
 
         let isLoading = false;
         let sessionId = null;
+        let isGameOver = false;
 
         // Initialize the game
         document.addEventListener('DOMContentLoaded', function() {
@@ -318,6 +319,20 @@
                 }
             });
         });
+
+        function setGameOverState(state) {
+            isGameOver = state;
+            const input = document.getElementById('questionInput');
+            const sendBtn = document.getElementById('sendBtn');
+            input.disabled = state;
+            sendBtn.disabled = state;
+            if (!state) {
+                input.placeholder = "Ask a yes/no question about the movie...";
+                input.focus();
+            } else {
+                input.placeholder = "Game over — start a new game to play again.";
+            }
+        }
 
         function addMessage(text, isUser = false, isLoading = false) {
             const chatArea = document.getElementById('chatArea');
@@ -352,7 +367,7 @@
             const input = document.getElementById('questionInput');
             const question = input.value.trim();
             
-            if (!question || isLoading) return;
+            if (!question || isLoading || isGameOver) return;
             
             // Add user message
             addMessage(question, true);
@@ -400,7 +415,9 @@
                 
                 // Check if game is over
                 if (data.game_over) {
-                    addMessage("🎉 Game Over! Would you like to start a new game?");
+                    addMessage(" Game Over! Would you like to start a new game?");
+                    // disable input to lock the revealed movie in place until new game
+                    setGameOverState(true);
                 }
                 
             } catch (error) {
@@ -412,7 +429,10 @@
             }
             
             isLoading = false;
-            document.getElementById('sendBtn').disabled = false;
+            // only re-enable send button if the game isn't over
+            if (!isGameOver) {
+                document.getElementById('sendBtn').disabled = false;
+            }
         }
 
         async function newGame() {
@@ -424,13 +444,14 @@
                 const chatArea = document.getElementById('chatArea');
                 chatArea.innerHTML = `
                     <div class="welcome-message">
-                        <span class="emoji">🎭</span>
+                        <span class="emoji"></span>
                         <strong>New Game Started!</strong><br>
                         I'm thinking of a different movie now. Ask me yes/no questions to figure out what it is!
                     </div>
                 `;
-                
-                addMessage("New game started! I'm thinking of a movie. Ask your first question to begin! 🎬");
+                addMessage("New game started! I'm thinking of a movie. Ask your first question to begin! ");
+                // re-enable inputs in case they were disabled by a previous game over
+                setGameOverState(false);
                 
             } catch (error) {
                 console.error('New Game Error:', error);
@@ -524,7 +545,8 @@
                 
                 // Check if game is over
                 if (data.game_over) {
-                    addMessage("🎉 Game Over! Would you like to start a new game?");
+                    addMessage(" Game Over! Would you like to start a new game?");
+                    setGameOverState(true);
                 }
                 
             } catch (error) {
@@ -536,7 +558,9 @@
             }
             
             isLoading = false;
-            document.getElementById('sendBtn').disabled = false;
+            if (!isGameOver) {
+                document.getElementById('sendBtn').disabled = false;
+            }
         }
     </script>
 </body>

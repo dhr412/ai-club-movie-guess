@@ -170,7 +170,10 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 # -------------------------
 def ask_question(user_question: str, session_id: str):
     session_request_counts[session_id] = session_request_counts.get(session_id, 0) + 1
-    movie = get_or_create_movie(session_id)
+    movie = get_or_create_movie(session_id) 
+    if isinstance(user_question, str) and user_question.strip().lower() == "exit":
+        return f"Game over! The movie was {movie.get('title')}"
+
     if session_request_counts.get(session_id, 0) > 10:
         return f"Game over! The movie was {movie.get('title')}"
     facts_block, system_instruction = build_facts_and_instruction(movie)
