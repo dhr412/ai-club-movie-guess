@@ -297,7 +297,7 @@
                 <button class="send-btn" id="sendBtn" onclick="sendQuestion()">Ask</button>
             </div>
             <div class="game-controls">
-                <button class="control-btn" onclick="newGame()">New Game</button>
+                <button class="control-btn" id="newGameBtn" onclick="newGame()">New Game</button>
                 <button class="control-btn" id="hintBtn" onclick="giveHint()">Hint</button>
                 <button class="control-btn" id="guessBtn" onclick="makeGuess()">Make Guess</button>
             </div>
@@ -328,16 +328,16 @@
             isGameOver = state;
             const input = document.getElementById('questionInput');
             const sendBtn = document.getElementById('sendBtn');
+            // Toggle all control buttons (New Game, Hint, Make Guess, etc.)
             const controlBtns = document.querySelectorAll('.control-btn');
 
             input.disabled = state;
             sendBtn.disabled = state;
-
             controlBtns.forEach(b => {
-                if (b.textContent.trim().toLowerCase() !== 'new game') {
-                    b.disabled = state;
-                } else {
+                if (b.id === 'newGameBtn') {
                     b.disabled = false;
+                } else {
+                    b.disabled = state;
                 }
             });
 
