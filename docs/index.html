@@ -307,7 +307,6 @@
     <script>
         // API Configuration
         const API_CONFIG = {
-            baseUrl: 'https://ai-club-movie-guess.onrender.com',
             askQuestion: 'https://ai-club-movie-guess.onrender.com/ask',
             hint: 'https://ai-club-movie-guess.onrender.com/hint'
         };
@@ -329,12 +328,13 @@
             isGameOver = state;
             const input = document.getElementById('questionInput');
             const sendBtn = document.getElementById('sendBtn');
-            const hintBtn = document.getElementById('hintBtn');
-            const guessBtn = document.getElementById('guessBtn');
+            // Toggle all control buttons (New Game, Hint, Make Guess, etc.)
+            const controlBtns = document.querySelectorAll('.control-btn');
+
             input.disabled = state;
             sendBtn.disabled = state;
-            hintBtn.disabled = state;
-            guessBtn.disabled = state;
+            controlBtns.forEach(b => b.disabled = state);
+
             if (!state) {
                 input.placeholder = "Ask a yes/no question about the movie...";
                 input.focus();
@@ -412,7 +412,6 @@
                 // Save session ID from first response
                 if (data.session_id && !sessionId) {
                     sessionId = data.session_id;
-                    console.log('Session ID saved:', sessionId);
                 }
                 
                 // Remove loading message
