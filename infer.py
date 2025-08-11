@@ -83,7 +83,7 @@ df_tmdb_simple = df_tmdb_filtered.select([
     pl.lit("English").alias("language")
 ])
 
-df_bollywood_sample = df_bollywood.sample(n=100, seed=24)
+df_bollywood_sample = df_bollywood.sample(n=100, seed=22)
 df_tmdb_sample = df_tmdb_simple.sample(n=100, seed=24)
 combined_df = pl.concat([df_tmdb_sample, df_bollywood_sample]).sample(fraction=1.0, shuffle=True)
 

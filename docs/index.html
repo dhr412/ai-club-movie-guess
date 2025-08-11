@@ -190,6 +190,11 @@
             color: white;
         }
 
+        .control-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .loading {
             display: flex;
             align-items: center;
@@ -293,8 +298,8 @@
             </div>
             <div class="game-controls">
                 <button class="control-btn" onclick="newGame()">New Game</button>
-                <button class="control-btn" onclick="giveHint()">Hint</button>
-                <button class="control-btn" onclick="makeGuess()">Make Guess</button>
+                <button class="control-btn" id="hintBtn" onclick="giveHint()">Hint</button>
+                <button class="control-btn" id="guessBtn" onclick="makeGuess()">Make Guess</button>
             </div>
         </div>
     </div>
@@ -419,7 +424,7 @@
                 
                 // Check if game is over
                 if (data.game_over) {
-                    addMessage(" Game Over! Would you like to start a new game?");
+                    addMessage("Would you like to start a new game?");
                     // disable input to lock the revealed movie in place until new game
                     setGameOverState(true);
                 }
