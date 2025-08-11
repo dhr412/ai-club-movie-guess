@@ -324,8 +324,12 @@
             isGameOver = state;
             const input = document.getElementById('questionInput');
             const sendBtn = document.getElementById('sendBtn');
+            const hintBtn = document.getElementById('hintBtn');
+            const guessBtn = document.getElementById('guessBtn');
             input.disabled = state;
             sendBtn.disabled = state;
+            hintBtn.disabled = state;
+            guessBtn.disabled = state;
             if (!state) {
                 input.placeholder = "Ask a yes/no question about the movie...";
                 input.focus();
